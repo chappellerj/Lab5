@@ -1,3 +1,9 @@
+// Name: Ryan Chappelle
+// Date: 05/09/2023
+// Title: Lab 5 Part 5
+// Description: Solution to the Producer-Consumer problem using a condition
+// variable
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

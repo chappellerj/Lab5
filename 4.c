@@ -1,3 +1,8 @@
+// Name: Ryan Chappelle
+// Date: 05/09/2023
+// Title: Lab 5 Part 4
+// Description: Solution to the Producer-Consumer problem using semaphores
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
