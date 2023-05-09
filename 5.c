@@ -23,7 +23,10 @@ pthread_mutex_t mutex;
 pthread_cond_t full, empty;
 int p, c, in, out, count;
 
+
+// Producer function that produces (adds) items to the buffer
 void *producer(void *arg);
+// Consumer function that consumes (subtracts) items from the buffer
 void *consumer(void *arg);
 
 int main() {
@@ -44,9 +47,7 @@ int main() {
         pthread_join(tidC[i], NULL);
         printf("\t\t\tConsumer %d joined\n", i);
     }
-
-    printf("Parent quiting\n");
-
+    
     return 0;
 }
 
