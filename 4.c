@@ -27,10 +27,10 @@ void *producer(void *arg);
 // Consumer function that consumes (subtracts) items from the buffer
 void *consumer(void *arg);
 
-void cleanup(int sign);
+//void cleanup(int sign);
 
 int main() {
-    signal(SIGINT, cleanup);
+    //signal(SIGINT, cleanup);
     mutex = sem_open("mutex", O_CREAT, 0644, 1);
     empty = sem_open("empty", O_CREAT, 0644, BUFSIZE);
     full = sem_open("full", O_CREAT, 0644, 0);
@@ -59,7 +59,7 @@ int main() {
     sem_unlink("mutex");
     sem_unlink("empty");
     sem_unlink("full");
-    raise(SIGINT);
+    //raise(SIGINT);
 
     return 0;
 }
@@ -103,10 +103,11 @@ void *consumer(void *arg) {
     } while(1);
     pthread_exit(0);
 }
-
+/*
 void cleanup(int sign) {
     sem_unlink("mutex");
     sem_unlink("empty");
     sem_unlink("full");
     exit(0);
 }
+*/
