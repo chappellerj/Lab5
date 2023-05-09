@@ -13,8 +13,8 @@
 #include <fcntl.h>
 
 // Buffer size as well as the number of producers/consumers
-#define BUFSIZE 10
-#define NP 3
+#define BUFSIZE 5
+#define NP 2
 #define NC 2
 
 pthread_t tidP[NP], tidC[NC];
