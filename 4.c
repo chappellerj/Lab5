@@ -12,6 +12,7 @@
 #include <signal.h>
 #include <fcntl.h>
 
+// Buffer size as well as the number of producers/consumers
 #define BUFSIZE 10
 #define NP 3
 #define NC 2
@@ -26,29 +27,39 @@ void *producer(void *arg);
 // Consumer function that consumes (subtracts) items from the buffer
 void *consumer(void *arg);
 
-int main() {
+void cleanup(int sign);
 
+int main() {
+    signal(SIGINT, cleanup);
     mutex = sem_open("mutex", O_CREAT, 0644, 1);
     empty = sem_open("empty", O_CREAT, 0644, BUFSIZE);
     full = sem_open("full", O_CREAT, 0644, 0);
 
     int i;
-    for (i = 0; i < NP; i++)
+    // Create producer threads
+    for (i = 0; i < NP; i++) {
         pthread_create(&tidP[i], NULL, producer, (void *)(size_t)i);
-    for (i = 0; i < NC; i++)
+    }
+    // Create consumer threads
+    for (i = 0; i < NC; i++) {
         pthread_create(&tidC[i], NULL, consumer, (void *)(size_t)i);
+    }
+    // Join producer threads
     for (i = 0; i < NP; i++) {
         pthread_join(tidP[i], NULL);
         printf("Producer %d joined\n", i);
     }
+    // Join consumer threads
     for (i = 0; i < NC; i++) {
         pthread_join(tidC[i], NULL);
         printf("\t\t\tConsumer %d joined\n", i);
     }
 
+    // Unlink semaphores
     sem_unlink("mutex");
     sem_unlink("empty");
     sem_unlink("full");
+    raise(SIGINT);
 
     return 0;
 }
@@ -91,4 +102,11 @@ void *consumer(void *arg) {
         sem_post(empty);
     } while(1);
     pthread_exit(0);
+}
+
+void cleanup(int sign) {
+    sem_unlink("mutex");
+    sem_unlink("empty");
+    sem_unlink("full");
+    exit(0);
 }
